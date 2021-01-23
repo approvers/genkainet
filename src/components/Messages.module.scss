@@ -1,4 +1,14 @@
-.messages {
+.messages-wrapper {
+  position: relative;
   width: 100%;
-  height: auto;
+  height: 100%;
+}
+
+.messages {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: scroll;
 }

@@ -11,7 +11,9 @@ const InputField: FC<Props> = ({ destination, onSendClick }) => {
   return (
     <div>
       <textarea value={message} onChange={({ target: { value } }) => setMessage(value)} />
-      <button onClick={() => onSendClick(message)}>{sendButtonText}</button>
+      <button onClick={() => onSendClick(message)} disabled={destination == null}>
+        {sendButtonText}
+      </button>
     </div>
   );
 };

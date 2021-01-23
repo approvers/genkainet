@@ -1,7 +1,8 @@
 import React, { FC, useState } from "react";
 import { INode, IConnection } from "@approvers/libgenkainet";
 import Graph from "./components/Graph";
-import Console from "./components/Console";
+import InputField from "./components/InputField";
+import Messages from "./components/Messages";
 import { Message } from "./shared";
 
 // for test
@@ -22,7 +23,7 @@ const connections: IConnection[] = [
   { from: nodes[3], to: nodes[5], state: "established", establishedAt: new Date() },
   { from: nodes[4], to: nodes[5], state: "established", establishedAt: new Date() },
 ];
-const message: Message[] = [
+const messages: Message[] = [
   { from: "0", message: "Message1" },
   { from: "1", message: "Message2" },
   { from: "5", message: "Message3" },
@@ -35,17 +36,11 @@ const message: Message[] = [
 const myId = "0";
 
 const App: FC = () => {
-  const [to, setTo] = useState<string | null>(null);
+  const [destination, setDestination] = useState<string | null>(null);
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
-      <Console
-        messages={message}
-        to={to}
-        myId={myId}
-        onSendClick={() => {
-          /* TODO */
-        }}
-      />
+      <Messages messages={messages} myId={myId} />
+      <InputField destination={destination} onSendClick={console.log} />
       <Graph nodes={nodes} connections={connections} onNodeClick={(nodeId) => setTo(nodeId)} />
     </div>
   );

@@ -1,8 +1,28 @@
-import cytospace, { NodeDefinition, EdgeDefinition, Core } from "cytoscape";
+import cytospace, { NodeDefinition, EdgeDefinition, Core, Stylesheet } from "cytoscape";
 import { IConnection, INode } from "@approvers/libgenkainet";
 import React, { FC, useState } from "react";
 
 import styles from "./Graph.module.scss";
+
+const style: Stylesheet[] = [
+  {
+    selector: "node",
+    style: {
+      "background-color": "#ccc",
+      label: "data(id)",
+    },
+  },
+  {
+    selector: "edge",
+    style: {
+      width: 3,
+      "line-color": "#ccc",
+      "target-arrow-color": "#ccc",
+      "target-arrow-shape": "triangle",
+      "curve-style": "bezier",
+    },
+  },
+];
 
 type Props = {
   nodes: INode[];
@@ -28,28 +48,8 @@ const Graph: FC<Props> = ({ nodes, connections }) => {
     const cy = cytospace({
       container: element,
       elements,
-      style: [
-        {
-          selector: "node",
-          style: {
-            "background-color": "#ccc",
-            label: "data(id)",
-          },
-        },
-        {
-          selector: "edge",
-          style: {
-            width: 3,
-            "line-color": "#ccc",
-            "target-arrow-color": "#ccc",
-            "target-arrow-shape": "triangle",
-            "curve-style": "bezier",
-          },
-        },
-      ],
-      layout: {
-        name: "random",
-      },
+      style,
+      layout: { name: "random" },
     });
     setCy(cy);
   };

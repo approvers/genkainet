@@ -27,7 +27,7 @@ const style: Stylesheet[] = [
 type Props = {
   nodes: INode[];
   connections: IConnection[];
-  onNodeClick?: (nodeId?: string) => void;
+  onNodeClick?: (nodeId: string) => void;
 };
 
 const Graph: FC<Props> = ({ nodes, connections, onNodeClick }) => {

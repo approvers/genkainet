@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import Messages from "./Messages";
 import InputField from "./InputField";
-import { Message as MessageType } from "../shared";
+import { Message } from "../shared";
 
 type Props = {
   myId: string;
-  messages: MessageType[];
+  messages: Message[];
   to: string | null;
   onSendClick: (message: string) => void;
 };
@@ -13,11 +13,7 @@ type Props = {
 const Console: FC<Props> = ({ messages, to, onSendClick, myId }) => {
   return (
     <div>
-      <div>
-        {messages.map((message, index) => (
-          <Messages key={index} message={message} isMine={myId === message.from} />
-        ))}
-      </div>
+      <Messages messages={messages} myId={myId} />
       <InputField destination={to} onSendClick={onSendClick} />
     </div>
   );

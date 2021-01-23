@@ -2,14 +2,21 @@ import React, { FC } from "react";
 import { Message } from "../shared";
 
 type Props = {
-  message: Message;
-  isMine: boolean;
+  messages: Message[];
+  myId: string;
 };
 
-const Messages: FC<Props> = ({ message: { from, message }, isMine }) => (
+const Messages: FC<Props> = ({ messages, myId }) => (
   <div>
-    <div>{isMine ? `${from} (me)` : from}</div>
-    <div>{message}</div>
+    {messages.map(({ from, message }, index) => (
+      <div key={index}>
+        <div>
+          {from}
+          {from === myId ? "(me)" : ""}
+        </div>
+        <div>{message}</div>
+      </div>
+    ))}
   </div>
 );
 

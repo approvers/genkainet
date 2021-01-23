@@ -49,8 +49,8 @@ const App: FC = () => {
         onNodeClick={(nodeId) => setDestination(nodeId)}
       />
       <Console>
-        <Messages messages={messages} myId={myId} />
         <InputField destination={destination} onSendClick={(message) => console.log(message)} />
+        <Messages messages={messages} myId={myId} />
       </Console>
     </div>
   );

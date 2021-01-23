@@ -3,7 +3,11 @@ import { INode, IConnection } from "@approvers/libgenkainet";
 import Graph from "./components/Graph";
 import InputField from "./components/InputField";
 import Messages from "./components/Messages";
+import Console from "./components/Console";
 import { Message } from "./shared";
+
+import "./global.scss";
+import styles from "./App.module.scss";
 
 // for test
 const nodes: INode[] = [
@@ -38,14 +42,16 @@ const myId = "0";
 const App: FC = () => {
   const [destination, setDestination] = useState<string | null>(null);
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <Messages messages={messages} myId={myId} />
-      <InputField destination={destination} onSendClick={(message) => console.log(message)} />
+    <div className={styles.root}>
       <Graph
         nodes={nodes}
         connections={connections}
         onNodeClick={(nodeId) => setDestination(nodeId)}
       />
+      <Console>
+        <InputField destination={destination} onSendClick={(message) => console.log(message)} />
+        <Messages messages={messages} myId={myId} />
+      </Console>
     </div>
   );
 };

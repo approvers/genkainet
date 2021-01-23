@@ -1,5 +1,6 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import Message from "./Message";
+import InputField from "./InputField";
 import { Message as MessageType } from "../shared";
 
 type Props = {
@@ -10,7 +11,6 @@ type Props = {
 };
 
 const Console: FC<Props> = ({ messages, to, onSendClick, myId }) => {
-  const [message, setMessage] = useState("");
   return (
     <div>
       <div>
@@ -18,12 +18,7 @@ const Console: FC<Props> = ({ messages, to, onSendClick, myId }) => {
           <Message key={index} message={message} isMine={myId === message.from} />
         ))}
       </div>
-      <div>
-        <textarea value={message} onChange={({ target: { value } }) => setMessage(value)} />
-        <button onClick={() => onSendClick(message)} disabled={to != null}>
-          Send{to ? ` to ${to}` : ""}
-        </button>
-      </div>
+      <InputField destination={to} onSendClick={onSendClick} />
     </div>
   );
 };

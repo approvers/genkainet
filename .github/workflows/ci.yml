@@ -9,6 +9,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14
+      - run: |
+        cat <<EOF > .npmrc
+        @approvers:registry=https://npm.pkg.github.com
+        //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN }}
       - uses: pnpm/action-setup@v1.2.1
         with:
           version: 5.11.1
@@ -29,6 +33,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14
+      - run: |
+        cat <<EOF > .npmrc
+        @approvers:registry=https://npm.pkg.github.com
+        //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN }}
       - uses: pnpm/action-setup@v1.2.1
         with:
           version: 5.11.1

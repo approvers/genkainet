@@ -5,6 +5,9 @@ import InputField from "./components/InputField";
 import Messages from "./components/Messages";
 import { Message } from "./shared";
 
+import "./global.scss";
+import styles from "./App.module.scss";
+
 // for test
 const nodes: INode[] = [
   { id: "0" },
@@ -38,14 +41,16 @@ const myId = "0";
 const App: FC = () => {
   const [destination, setDestination] = useState<string | null>(null);
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <Messages messages={messages} myId={myId} />
-      <InputField destination={destination} onSendClick={(message) => console.log(message)} />
+    <div className={styles.root}>
       <Graph
         nodes={nodes}
         connections={connections}
         onNodeClick={(nodeId) => setDestination(nodeId)}
       />
+      <div>
+        <Messages messages={messages} myId={myId} />
+        <InputField destination={destination} onSendClick={(message) => console.log(message)} />
+      </div>
     </div>
   );
 };

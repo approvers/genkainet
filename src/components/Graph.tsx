@@ -1,6 +1,6 @@
 import cytospace, { NodeDefinition, EdgeDefinition, Core, Stylesheet } from "cytoscape";
 import { IConnection, INode } from "@approvers/libgenkainet";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 
 import styles from "./Graph.module.scss";
 
@@ -27,10 +27,10 @@ const style: Stylesheet[] = [
 type Props = {
   nodes: INode[];
   connections: IConnection[];
+  onNodeClick?: (nodeId?: string) => void;
 };
 
-const Graph: FC<Props> = ({ nodes, connections }) => {
-  const [cy, setCy] = useState<Core | null>(null);
+const Graph: FC<Props> = ({ nodes, connections, onNodeClick }) => {
   const onLoad = (element: HTMLDivElement | null) => {
     if (!element) return;
     const graphNodes: NodeDefinition[] = nodes.map(({ id }) => ({
@@ -51,7 +51,10 @@ const Graph: FC<Props> = ({ nodes, connections }) => {
       style,
       layout: { name: "random" },
     });
-    setCy(cy);
+    cy.on("tap", "node", (event) => {
+      const nodeId = event.target._private.data.id;
+      if (onNodeClick) onNodeClick(nodeId);
+    });
   };
   return <div className={styles.graph} ref={onLoad} />;
 };

@@ -32,6 +32,7 @@ const message: Message[] = [
   { from: "4", message: "Message7" },
   { from: "5", message: "Message8" },
 ];
+const myId = "0";
 
 const App: FC = () => {
   const [to, setTo] = useState<string | null>(null);
@@ -40,6 +41,7 @@ const App: FC = () => {
       <Console
         messages={message}
         to={to}
+        myId={myId}
         onSendClick={() => {
           /* TODO */
         }}

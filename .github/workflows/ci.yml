@@ -10,9 +10,9 @@ jobs:
         with:
           node-version: 14
       - run: |
-        cat <<EOF > .npmrc
-        @approvers:registry=https://npm.pkg.github.com
-        //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN }}
+        echo "@approvers:registry=https://npm.pkg.github.com" >> .npmrc
+        echo "//npm.pkg.github.com/:_authToken=${{ secrets.TOKEN }}" >> .npmrc
+        echo "always-auth=true" >> .npmrc
       - uses: pnpm/action-setup@v1.2.1
         with:
           version: 5.11.1
@@ -34,9 +34,9 @@ jobs:
         with:
           node-version: 14
       - run: |
-        cat <<EOF > .npmrc
-        @approvers:registry=https://npm.pkg.github.com
-        //npm.pkg.github.com/:_authToken=${{ secrets.TOKEN }}
+        echo "@approvers:registry=https://npm.pkg.github.com" >> .npmrc
+        echo "//npm.pkg.github.com/:_authToken=${{ secrets.TOKEN }}" >> .npmrc
+        echo "always-auth=true" >> .npmrc
       - uses: pnpm/action-setup@v1.2.1
         with:
           version: 5.11.1

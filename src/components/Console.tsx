@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import Message from "./Message";
+import Messages from "./Messages";
 import InputField from "./InputField";
 import { Message as MessageType } from "../shared";
 
@@ -15,7 +15,7 @@ const Console: FC<Props> = ({ messages, to, onSendClick, myId }) => {
     <div>
       <div>
         {messages.map((message, index) => (
-          <Message key={index} message={message} isMine={myId === message.from} />
+          <Messages key={index} message={message} isMine={myId === message.from} />
         ))}
       </div>
       <InputField destination={to} onSendClick={onSendClick} />

@@ -40,8 +40,12 @@ const App: FC = () => {
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <Messages messages={messages} myId={myId} />
-      <InputField destination={destination} onSendClick={console.log} />
-      <Graph nodes={nodes} connections={connections} onNodeClick={(nodeId) => setTo(nodeId)} />
+      <InputField destination={destination} onSendClick={(message) => console.log(message)} />
+      <Graph
+        nodes={nodes}
+        connections={connections}
+        onNodeClick={(nodeId) => setDestination(nodeId)}
+      />
     </div>
   );
 };

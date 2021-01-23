@@ -3,6 +3,7 @@ import { INode, IConnection } from "@approvers/libgenkainet";
 import Graph from "./components/Graph";
 import InputField from "./components/InputField";
 import Messages from "./components/Messages";
+import Console from "./components/Console";
 import { Message } from "./shared";
 
 import "./global.scss";
@@ -47,10 +48,10 @@ const App: FC = () => {
         connections={connections}
         onNodeClick={(nodeId) => setDestination(nodeId)}
       />
-      <div>
+      <Console>
         <Messages messages={messages} myId={myId} />
         <InputField destination={destination} onSendClick={(message) => console.log(message)} />
-      </div>
+      </Console>
     </div>
   );
 };

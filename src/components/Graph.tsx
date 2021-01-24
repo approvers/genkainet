@@ -62,7 +62,7 @@ const Graph: FC<Props> = React.memo(({ nodes, connections, onNodeClick, onBackgr
         if (onNodeClick) onNodeClick(nodeId);
       }
     });
-  }, []);
+  }, [nodes, connections]);
   return <div className={styles.graph} ref={ref} />;
 });
 

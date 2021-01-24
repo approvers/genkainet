@@ -47,6 +47,7 @@ const App: FC = () => {
         nodes={nodes}
         connections={connections}
         onNodeClick={(nodeId) => setDestination(nodeId)}
+        onBackgroundClick={() => setDestination(null)}
       />
       <Console>
         <InputField destination={destination} onSendClick={(message) => console.log(message)} />

@@ -29,9 +29,10 @@ type Props = {
   nodes: INode[];
   connections: IConnection[];
   onNodeClick?: (nodeId: string) => void;
+  onBackgroundClick?: () => void;
 };
 
-const Graph: FC<Props> = ({ nodes, connections, onNodeClick }) => {
+const Graph: FC<Props> = ({ nodes, connections, onNodeClick, onBackgroundClick }) => {
   const onLoad = (element: HTMLDivElement | null) => {
     if (!element) return;
     const graphNodes: NodeDefinition[] = nodes.map(({ id }) => ({
@@ -52,9 +53,13 @@ const Graph: FC<Props> = ({ nodes, connections, onNodeClick }) => {
       style,
       layout: { name: "random" },
     });
-    cy.on("tap", "node", (event) => {
-      const nodeId = event.target._private.data.id;
-      if (onNodeClick) onNodeClick(nodeId);
+    cy.on("tap", (event) => {
+      if (event.target === cy) {
+        if (onBackgroundClick) onBackgroundClick();
+      } else {
+        const nodeId = event.target._private.data.id;
+        if (onNodeClick) onNodeClick(nodeId);
+      }
     });
   };
   return <div className={styles.graph} ref={onLoad} />;

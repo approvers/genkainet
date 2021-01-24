@@ -32,7 +32,7 @@ const App: FC = () => {
         connection.to.id,
       ]);
       setNodes([...new Set(duplicatedNodes)]);
-      setConnections((prev) => prev.concat(connections));
+      setConnections(connections);
 
       network.node.network.onUpdated = () => {
         const connections = network.node.network.connections;
@@ -41,7 +41,7 @@ const App: FC = () => {
           connection.to.id,
         ]);
         setNodes([...new Set(duplicatedNodes)]);
-        setConnections((prev) => prev.concat(connections));
+        setConnections(connections);
       };
     };
     asyncFunc().catch(console.error);
@@ -54,6 +54,7 @@ const App: FC = () => {
       toNode = nodes.find(({ id }) => id === destination);
     }
     network.node.send(new MessagePacket(message, network.node, toNode));
+    setMessages((prev) => prev.concat({ from: network.node.id, message }));
   };
   return (
     <div className={styles.root}>

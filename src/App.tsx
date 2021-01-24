@@ -18,7 +18,7 @@ const App: FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   useEffect(() => {
     const asyncFunc = async () => {
-      const network = await Network.create("ws://localhost:3000/discover", {
+      const network = await Network.create("wss://discoverer.genkai.cc/discover", {
         handle: (from, msg) => {
           setMessages((prev) => prev.concat({ from: from.id, message: msg }));
         },

@@ -14,7 +14,7 @@ import { IAnswer, IOffer } from "@approvers/libgenkainet/dist/webrtc";
 
 export class Network {
   private webSocket!: WebSocketAsPromised;
-  private node!: Node;
+  public node!: Node;
 
   private constructor(private discovererURL: string, private onMessage: IMessageHandler) {}
 
@@ -24,17 +24,31 @@ export class Network {
     self.webSocket = new WebSocketAsPromised(discovererURL);
     await self.webSocket.open();
 
-    const discoverer: IDiscoverer = {
+    const nodeID = (randomWords(5) as string[]).join("-");
+    const node = new Node(
+      nodeID,
+      self.getDiscoverer(),
+      new DefaultHandlerFactory(onMessage, {} as any),
+    );
+
+    self.node = node;
+
+    await node.connect();
+    return self;
+  }
+
+  getDiscoverer(): IDiscoverer {
+    return {
       discover: (): Promise<INode> => {
         return new Promise((resolve, reject) => {
-          console.log("discovering!!");
+          console.log("discovering!!!");
 
           const req: DiscoverRequest = { type: "requestDiscover" };
-          self.webSocket.send(JSON.stringify(req));
+          this.webSocket.send(JSON.stringify(req));
 
-          self.webSocket.ws.onmessage = (data) => {
-            self.webSocket.ws.onmessage = null;
-            console.log("discovered!!");
+          this.webSocket.ws.onmessage = (data) => {
+            this.webSocket.ws.onmessage = null;
+            console.log("discovered!!!");
 
             const response = JSON.parse(data.data);
             if (!isDiscoverResponse(response)) {
@@ -57,11 +71,11 @@ export class Network {
               sdp: offer.sdp,
             },
           };
-          self.webSocket.send(JSON.stringify(req));
+          this.webSocket.send(JSON.stringify(req));
 
-          self.webSocket.ws.onmessage = (data) => {
-            self.webSocket.ws.onmessage = null;
-            console.log("offered!");
+          this.webSocket.ws.onmessage = (data) => {
+            this.webSocket.ws.onmessage = null;
+            console.log("offered!!!");
 
             const response = JSON.parse(data.data);
             if (!isAnswerResponse(response)) {
@@ -73,13 +87,5 @@ export class Network {
         });
       },
     };
-
-    const nodeID = (randomWords(5) as string[]).join("-");
-    const node = new Node(nodeID, discoverer, new DefaultHandlerFactory(onMessage, {} as any));
-    self.node = node;
-
-    await node.connect();
-
-    return self;
   }
 }

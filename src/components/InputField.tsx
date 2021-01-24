@@ -12,7 +12,12 @@ const InputField: FC<Props> = ({ destination, onSendClick }) => {
   const sendButtonText = destination ? `Send to ${destination}` : "Send";
   return (
     <div className={styles.inputField}>
-      <textarea value={message} onChange={({ target: { value } }) => setMessage(value)} />
+      <textarea
+        value={message}
+        onChange={({ target: { value } }) => setMessage(value)}
+        rows={1}
+        placeholder="Message ..."
+      />
       <button onClick={() => onSendClick(message)} disabled={destination == null}>
         {sendButtonText}
       </button>

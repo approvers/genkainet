@@ -1,6 +1,6 @@
 import cytospace, { NodeDefinition, EdgeDefinition, Core, Stylesheet } from "cytoscape";
 import { IConnection, INode } from "@approvers/libgenkainet";
-import React, { FC, useState } from "react";
+import React, { FC, useState, useRef, useEffect } from "react";
 
 import styles from "./Graph.module.scss";
 
@@ -38,10 +38,11 @@ type Props = {
   onBackgroundClick?: () => void;
 };
 
-const Graph: FC<Props> = ({ nodes, connections, onNodeClick, onBackgroundClick }) => {
+const Graph: FC<Props> = React.memo(({ nodes, connections, onNodeClick, onBackgroundClick }) => {
   const [lastClicked, setLastClicked] = useState<string | null>(null);
-  const onLoad = (element: HTMLDivElement | null) => {
-    if (!element) return;
+  const ref = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (!ref.current) return;
     const graphNodes: NodeDefinition[] = nodes.map(({ id }) => ({
       data: { id },
     }));
@@ -55,7 +56,7 @@ const Graph: FC<Props> = ({ nodes, connections, onNodeClick, onBackgroundClick }
     elements.push(...graphNodes);
     elements.push(...graphEdges);
     const cy = cytospace({
-      container: element,
+      container: ref.current,
       elements,
       style,
       layout: { name: "random" },
@@ -73,8 +74,8 @@ const Graph: FC<Props> = ({ nodes, connections, onNodeClick, onBackgroundClick }
         setLastClicked(nodeId);
       }
     });
-  };
-  return <div className={styles.graph} ref={onLoad} />;
-};
+  }, []);
+  return <div className={styles.graph} ref={ref} />;
+});
 
 export default Graph;

@@ -32,10 +32,10 @@ export class Network {
       new DefaultHandlerFactory(onMessage, {} as any),
     );
 
-    self.node = node;
-
     const connection = await node.connect();
-    connection.send(new NewPacket(connection, self.node));
+    connection.send(new NewPacket(connection, node));
+
+    self.node = node;
 
     return self;
   }

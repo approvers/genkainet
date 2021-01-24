@@ -43,14 +43,26 @@ const App: FC = () => {
           console.log(`Message received from ${from.id}: ${msg}`);
         },
       });
-      const connections = network.node.network.connections;
+
       setNetwork(network);
+
+      const connections = network.node.network.connections;
       const duplicatedNodes = connections.flatMap((connection) => [
         connection.from.id,
         connection.to.id,
       ]);
       setNodes([...new Set(duplicatedNodes)]);
       setConnections((prev) => prev.concat(connections));
+
+      network.node.network.onUpdated = () => {
+        const connections = network.node.network.connections;
+        const duplicatedNodes = connections.flatMap((connection) => [
+          connection.from.id,
+          connection.to.id,
+        ]);
+        setNodes([...new Set(duplicatedNodes)]);
+        setConnections((prev) => prev.concat(connections));
+      };
     };
     asyncFunc().catch(console.error);
   }, []);

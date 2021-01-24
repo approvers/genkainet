@@ -5,7 +5,7 @@ import styles from "./Messages.module.scss";
 
 type Props = {
   messages: Message[];
-  myId: string;
+  myId?: string;
 };
 
 const Messages: FC<Props> = ({ messages, myId }) => (

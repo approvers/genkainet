@@ -28,7 +28,7 @@
     }
   },
   "dependencies": {
-    "@approvers/libgenkainet": "0.1.3",
+    "@approvers/libgenkainet": "0.1.4",
     "core-js": "3",
     "cytoscape": "^3.18.0",
     "d3": "^6.4.0",

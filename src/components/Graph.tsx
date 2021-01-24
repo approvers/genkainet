@@ -8,16 +8,17 @@ const style: Stylesheet[] = [
   {
     selector: "node",
     style: {
-      "background-color": "#ccc",
+      "background-color": "#06d8d7",
+      color: "#fff",
       label: "data(id)",
     },
   },
   {
     selector: "edge",
     style: {
-      width: 3,
-      "line-color": "#ccc",
-      "target-arrow-color": "#ccc",
+      width: 4,
+      "line-color": "#286060",
+      "target-arrow-color": "#286060",
       "target-arrow-shape": "triangle",
       "curve-style": "bezier",
     },

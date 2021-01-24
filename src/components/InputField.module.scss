@@ -1,3 +1,31 @@
 .input-field {
-  width: 100%;
+  display: flex;
+  padding: 0.5em;
+
+  > textarea {
+    flex-grow: 1;
+    padding: 0.5em;
+    font: inherit;
+    color: rgb(161, 236, 251);
+    background: transparent;
+    outline: none;
+
+    &:focus {
+      border: 1px solid rgb(161, 236, 251);
+    }
+  }
+
+  > button {
+    padding: 0.3em 1em;
+    margin-left: 0.5em;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid rgb(161, 236, 251);
+
+    &[disabled] {
+      color: gray;
+      border-color: gray;
+    }
+  }
 }

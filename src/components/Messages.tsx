@@ -12,7 +12,7 @@ const Messages: FC<Props> = ({ messages, myId }) => (
   <div className={styles.messagesWrapper}>
     <div className={styles.messages}>
       {messages.map(({ from, message }, index) => (
-        <div key={index}>
+        <div key={index} className={styles.message}>
           <div>
             {from}
             {from === myId ? "(me)" : ""}

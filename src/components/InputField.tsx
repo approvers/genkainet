@@ -9,7 +9,7 @@ type Props = {
 
 const InputField: FC<Props> = ({ destination, onSendClick }) => {
   const [message, setMessage] = useState("");
-  const sendButtonText = destination ? `Send to ${destination}` : "Send";
+  const sendButtonText = destination ? `Send to ${destination}` : "Send to All";
   return (
     <div className={styles.inputField}>
       <textarea
@@ -18,9 +18,7 @@ const InputField: FC<Props> = ({ destination, onSendClick }) => {
         rows={1}
         placeholder="Message ..."
       />
-      <button onClick={() => onSendClick(message)} disabled={destination == null}>
-        {sendButtonText}
-      </button>
+      <button onClick={() => onSendClick(message)}>{sendButtonText}</button>
     </div>
   );
 };

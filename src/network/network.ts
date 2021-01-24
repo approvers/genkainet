@@ -3,6 +3,7 @@ import {
   IDiscoverer,
   IMessageHandler,
   INode,
+  NewPacket,
   Node,
 } from "@approvers/libgenkainet";
 import { DiscoverRequest, isDiscoverResponse, AnswerRequest, isAnswerResponse } from "./models";
@@ -33,7 +34,9 @@ export class Network {
 
     self.node = node;
 
-    await node.connect();
+    const connection = await node.connect();
+    connection.send(new NewPacket(connection, self.node));
+
     return self;
   }
 

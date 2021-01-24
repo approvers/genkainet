@@ -1,6 +1,6 @@
 import cytospace, { NodeDefinition, EdgeDefinition, Core, Stylesheet } from "cytoscape";
 import { IConnection, INode } from "@approvers/libgenkainet";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 import styles from "./Graph.module.scss";
 
@@ -23,6 +23,12 @@ const style: Stylesheet[] = [
       "curve-style": "bezier",
     },
   },
+  {
+    selector: ".highlighted",
+    style: {
+      "background-color": "#ff6c77",
+    },
+  },
 ];
 
 type Props = {
@@ -33,6 +39,7 @@ type Props = {
 };
 
 const Graph: FC<Props> = ({ nodes, connections, onNodeClick, onBackgroundClick }) => {
+  const [lastClicked, setLastClicked] = useState<string | null>(null);
   const onLoad = (element: HTMLDivElement | null) => {
     if (!element) return;
     const graphNodes: NodeDefinition[] = nodes.map(({ id }) => ({
@@ -53,12 +60,17 @@ const Graph: FC<Props> = ({ nodes, connections, onNodeClick, onBackgroundClick }
       style,
       layout: { name: "random" },
     });
+    if (lastClicked) {
+      cy.nodes("#" + lastClicked).addClass("highlighted");
+    }
     cy.on("tap", (event) => {
       if (event.target === cy) {
         if (onBackgroundClick) onBackgroundClick();
+        setLastClicked(null);
       } else {
         const nodeId = event.target._private.data.id;
         if (onNodeClick) onNodeClick(nodeId);
+        setLastClicked(nodeId);
       }
     });
   };

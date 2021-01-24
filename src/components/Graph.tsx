@@ -26,7 +26,7 @@ const style: Stylesheet[] = [
 ];
 
 type Props = {
-  nodes: INode[];
+  nodes: string[];
   connections: IConnection[];
   onNodeClick?: (nodeId: string) => void;
 };
@@ -34,7 +34,7 @@ type Props = {
 const Graph: FC<Props> = ({ nodes, connections, onNodeClick }) => {
   const onLoad = (element: HTMLDivElement | null) => {
     if (!element) return;
-    const graphNodes: NodeDefinition[] = nodes.map(({ id }) => ({
+    const graphNodes: NodeDefinition[] = nodes.map((id) => ({
       data: { id },
     }));
     const graphEdges: EdgeDefinition[] = connections.map(({ from, to }) => ({

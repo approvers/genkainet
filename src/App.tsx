@@ -19,15 +19,6 @@ const nodes: INode[] = [
   { id: "4" },
   { id: "5" },
 ];
-const connections: IConnection[] = [
-  { from: nodes[0], to: nodes[1], state: "established", establishedAt: new Date() },
-  { from: nodes[0], to: nodes[2], state: "established", establishedAt: new Date() },
-  { from: nodes[1], to: nodes[2], state: "established", establishedAt: new Date() },
-  { from: nodes[1], to: nodes[4], state: "established", establishedAt: new Date() },
-  { from: nodes[2], to: nodes[3], state: "established", establishedAt: new Date() },
-  { from: nodes[3], to: nodes[5], state: "established", establishedAt: new Date() },
-  { from: nodes[4], to: nodes[5], state: "established", establishedAt: new Date() },
-];
 const messages: Message[] = [
   { from: "0", message: "Message1" },
   { from: "1", message: "Message2" },
@@ -40,16 +31,29 @@ const messages: Message[] = [
 ];
 const myId = "0";
 
-(async () => {
-  const network = await Network.create("ws://localhost:3000/discover", {
-    handle: (from, msg) => {
-      console.log(`Message received from ${from.id}: ${msg}`);
-    },
-  });
-})();
-
 const App: FC = () => {
   const [destination, setDestination] = useState<string | null>(null);
+  const [nodes, setNodes] = useState<string[]>([]);
+  const [connections, setConnections] = useState<IConnection[]>([]);
+  const [network, setNetwork] = useState<Network | null>(null);
+  useEffect(() => {
+    const asyncFunc = async () => {
+      const network = await Network.create("ws://localhost:3000/discover", {
+        handle: (from, msg) => {
+          console.log(`Message received from ${from.id}: ${msg}`);
+        },
+      });
+      const connections = network.node.network.connections;
+      setNetwork(network);
+      const duplicatedNodes = connections.flatMap((connection) => [
+        connection.from.id,
+        connection.to.id,
+      ]);
+      setNodes([...new Set(duplicatedNodes)]);
+      setConnections((prev) => prev.concat(connections));
+    };
+    asyncFunc().catch(console.error);
+  }, []);
   return (
     <div className={styles.root}>
       <Graph

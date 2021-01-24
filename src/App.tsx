@@ -1,5 +1,5 @@
-import React, { FC, useState } from "react";
-import { INode, IConnection } from "@approvers/libgenkainet";
+import React, { FC, useEffect, useState } from "react";
+import { INode, IConnection, MessagePacket } from "@approvers/libgenkainet";
 import Graph from "./components/Graph";
 import InputField from "./components/InputField";
 import Messages from "./components/Messages";
@@ -8,39 +8,53 @@ import { Message } from "./shared";
 
 import "./global.scss";
 import styles from "./App.module.scss";
-
-// for test
-const nodes: INode[] = [
-  { id: "0" },
-  { id: "1" },
-  { id: "2" },
-  { id: "3" },
-  { id: "4" },
-  { id: "5" },
-];
-const connections: IConnection[] = [
-  { from: nodes[0], to: nodes[1], state: "established", establishedAt: new Date() },
-  { from: nodes[0], to: nodes[2], state: "established", establishedAt: new Date() },
-  { from: nodes[1], to: nodes[2], state: "established", establishedAt: new Date() },
-  { from: nodes[1], to: nodes[4], state: "established", establishedAt: new Date() },
-  { from: nodes[2], to: nodes[3], state: "established", establishedAt: new Date() },
-  { from: nodes[3], to: nodes[5], state: "established", establishedAt: new Date() },
-  { from: nodes[4], to: nodes[5], state: "established", establishedAt: new Date() },
-];
-const messages: Message[] = [
-  { from: "0", message: "Message1" },
-  { from: "1", message: "Message2" },
-  { from: "5", message: "Message3" },
-  { from: "0", message: "Message4" },
-  { from: "3", message: "Message5" },
-  { from: "2", message: "Message6" },
-  { from: "4", message: "Message7" },
-  { from: "5", message: "Message8" },
-];
-const myId = "0";
+import { Network } from "./network/network";
 
 const App: FC = () => {
   const [destination, setDestination] = useState<string | null>(null);
+  const [nodes, setNodes] = useState<string[]>([]);
+  const [connections, setConnections] = useState<IConnection[]>([]);
+  const [network, setNetwork] = useState<Network | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  useEffect(() => {
+    const asyncFunc = async () => {
+      const network = await Network.create("ws://localhost:3000/discover", {
+        handle: (from, msg) => {
+          setMessages((prev) => prev.concat({ from: from.id, message: msg }));
+        },
+      });
+
+      setNetwork(network);
+
+      const connections = network.node.network.connections;
+      const duplicatedNodes = connections.flatMap((connection) => [
+        connection.from.id,
+        connection.to.id,
+      ]);
+      setNodes([...new Set(duplicatedNodes)]);
+      setConnections((prev) => prev.concat(connections));
+
+      network.node.network.onUpdated = () => {
+        const connections = network.node.network.connections;
+        const duplicatedNodes = connections.flatMap((connection) => [
+          connection.from.id,
+          connection.to.id,
+        ]);
+        setNodes([...new Set(duplicatedNodes)]);
+        setConnections((prev) => prev.concat(connections));
+      };
+    };
+    asyncFunc().catch(console.error);
+  }, []);
+  const handleSendClick = (message: string) => {
+    if (!network) return;
+    let toNode: INode | undefined = undefined;
+    if (destination) {
+      const nodes = connections.flatMap(({ from, to }) => [from, to]);
+      toNode = nodes.find(({ id }) => id === destination);
+    }
+    network.node.send(new MessagePacket(message, network.node, toNode));
+  };
   return (
     <div className={styles.root}>
       <Graph
@@ -50,8 +64,8 @@ const App: FC = () => {
         onBackgroundClick={() => setDestination(null)}
       />
       <Console>
-        <InputField destination={destination} onSendClick={(message) => console.log(message)} />
-        <Messages messages={messages} myId={myId} />
+        <InputField destination={destination} onSendClick={handleSendClick} />
+        <Messages messages={messages} myId={network?.node.id} />
       </Console>
     </div>
   );

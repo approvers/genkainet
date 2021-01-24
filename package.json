@@ -28,15 +28,19 @@
     }
   },
   "dependencies": {
-    "core-js": "^3.8.3",
+    "@approvers/libgenkainet": "0.1.6",
+    "core-js": "3",
     "cytoscape": "^3.18.0",
     "d3": "^6.4.0",
+    "random-words": "^1.1.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "tslib": "^2.1.0"
+    "regenerator-runtime": "^0.13.7",
+    "tslib": "^2.1.0",
+    "websocket-as-promised": "^1.1.0"
   },
   "devDependencies": {
-    "@approvers/libgenkainet": "*",
+    "@types/random-words": "^1.1.0",
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@types/copy-webpack-plugin": "^6.4.0",

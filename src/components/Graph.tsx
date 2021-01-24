@@ -26,7 +26,7 @@ const style: Stylesheet[] = [
 ];
 
 type Props = {
-  nodes: INode[];
+  nodes: string[];
   connections: IConnection[];
   onNodeClick?: (nodeId: string) => void;
   onBackgroundClick?: () => void;
@@ -36,7 +36,7 @@ const Graph: FC<Props> = React.memo(({ nodes, connections, onNodeClick, onBackgr
   const ref = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (!ref.current) return;
-    const graphNodes: NodeDefinition[] = nodes.map(({ id }) => ({
+    const graphNodes: NodeDefinition[] = nodes.map((id) => ({
       data: { id },
     }));
     const graphEdges: EdgeDefinition[] = connections.map(({ from, to }) => ({
